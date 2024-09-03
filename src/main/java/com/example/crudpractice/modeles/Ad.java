@@ -22,6 +22,6 @@ public class Ad {
     @NonNull
     private String contact;
 
-    @ElementCollection
-    private List<String> photos = new ArrayList<>();
+//    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<AdPhoto> photos = new ArrayList<>();
 }
