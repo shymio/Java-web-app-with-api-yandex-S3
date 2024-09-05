@@ -9,6 +9,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.UUID;
@@ -21,13 +22,14 @@ public class YandexS3Service {
     public String  uploadPhoto(MultipartFile file) throws IOException {
         String key = "photos/" + UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
 
-        try {
+        try (InputStream inputStream = file.getInputStream()) {
             PutObjectResponse response = s3Client.putObject(
                     PutObjectRequest.builder()
                     .bucket("shymio-bucket")
                     .key(key)
+                    .contentType(file.getContentType())
                     .build(),
-                    RequestBody.fromInputStream(file.getInputStream(), file.getSize())
+                    RequestBody.fromInputStream(inputStream, file.getSize())
             );
             return "https://" + "shymio-bucket" + ".storage.yandexcloud.net/" + key;
         } catch (IOException e) {

@@ -34,23 +34,25 @@ public class AdController {
     }
 
     @PostMapping("/add") // отправка и сохранение данных в хранилища
-    public String addAd(Ad ad, @RequestParam("photos") List<MultipartFile> photos) {
+    public String addAd(Ad ad, @RequestParam(value = "photos", required = false) List<MultipartFile> photos) {
         List<AdPhoto> photoEntities = new ArrayList<>();
 
-        for (MultipartFile photo : photos) {
-            if (!photo.isEmpty()) {
-                try {
-                    AdPhoto adPhoto = new AdPhoto();
-                    adPhoto.setUrl(yandexS3Service.uploadPhoto(photo).toString());
-                    adPhoto.setAd(ad);
-                    photoEntities.add(adPhoto);
-                } catch (IOException e) {
-                    e.printStackTrace();
+        if (photos != null && !photos.isEmpty()) {
+            for (MultipartFile photo : photos) {
+                if (!photo.isEmpty()) {
+                    try {
+                        AdPhoto adPhoto = new AdPhoto();
+                        adPhoto.setUrl(yandexS3Service.uploadPhoto(photo));
+                        adPhoto.setAd(ad);
+                        photoEntities.add(adPhoto);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+//        ad.setPhotos(photoEntities);
         adService.save(ad);
-        // Если у тебя есть связь между Ad и AdPhoto, то фото можно сохранить отдельно
         adPhotoService.saveAll(photoEntities);
 
         return "redirect:/";

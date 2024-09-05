@@ -1,26 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Добавить объявление</title>
 </head>
 <body>
-<form th:action="@{/ads/add}" th:object="${ad}" method="post" enctype="multipart/form-data">
-    <label>Название:</label>
-    <input type="text" th:field="*{title}" /><br/>
 
-    <label>Цена:</label>
-    <input type="number" th:field="*{price}" /><br/>
+<h1>Добавить новое объявление</h1>
 
-    <label>Описание:</label>
-    <textarea th:field="*{description}"></textarea><br/>
+<form id="adForm" enctype="multipart/form-data">
+    <div>
+        <label for="title">Название:</label>
+        <input type="text" id="title" name="title" required>
+    </div>
 
-    <label>Контакт:</label>
-    <input type="text" th:field="*{contact}" /><br/>
+    <div>
+        <label for="price">Цена:</label>
+        <input type="number" id="price" name="price" required>
+    </div>
 
-    <label>Фотографии:</label>
-    <input type="file" name="photos" multiple accept="image/*" /><br/>
+    <div>
+        <label for="description">Описание:</label>
+        <textarea id="description" name="description"></textarea>
+    </div>
+
+    <div>
+        <label for="contact">Контактная информация:</label>
+        <input type="text" id="contact" name="contact" required>
+    </div>
+
+    <div>
+        <label>Фотографии (максимум 3):</label>
+        <div id="photoInputs">
+            <!-- Здесь будут отображаться загруженные фотографии -->
+        </div>
+        <input type="file" id="photoUpload" style="display:none;" accept="image/*">
+        <button type="button" onclick="uploadPhoto()">Загрузить фото</button>
+    </div>
 
     <button type="submit">Добавить объявление</button>
 </form>
+
+<script>
+    const photos = [];
+
+    function uploadPhoto() {
+        if (photos.length >= 3) {
+            alert('Вы можете загрузить максимум 3 фотографии.');
+            return;
+        }
+
+        const photoInput = document.getElementById('photoUpload');
+        photoInput.click();
+
+        photoInput.onchange = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                photos.push(file);
+                displayPhotos();
+                photoInput.value = ''; // Очищаем input для следующего файла
+            }
+        };
+    }
+
+    function displayPhotos() {
+        const photoInputs = document.getElementById('photoInputs');
+        photoInputs.innerHTML = '';
+        photos.forEach((photo, index) => {
+            const photoDiv = document.createElement('div');
+            photoDiv.textContent = `Фото ${index + 1}: ${photo.name}`;
+            photoInputs.appendChild(photoDiv);
+        });
+    }
+
+    document.getElementById('adForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Останавливаем стандартную отправку формы
+
+        const formData = new FormData(this);
+
+        // Добавляем выбранные фотографии в formData
+        photos.forEach((photo) => {
+            formData.append('photos', photo);
+        });
+
+        // Отправляем данные формы на сервер
+        fetch('/ads/add', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/'; // Редирект на главную страницу или другую после успешного добавления
+            } else {
+                return response.text().then(text => { throw new Error(text) });
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке формы:', error);
+            alert('Произошла ошибка при добавлении объявления.');
+        });
+    });
+</script>
+
 </body>
 </html>
