@@ -23,7 +23,6 @@ public class AdService {
         return adRepository.findByTitle(title);
     }
 
-//    @Transactional
     public Optional<Ad> findAdWithPhotos(Long id) {
         return adRepository.findAdWithPhotos(id);
     }

@@ -18,6 +18,7 @@ public class Ad {
     private Long id;
     @NonNull
     private String title;
+    @NonNull
     private int price;
     private String description;
     @NonNull

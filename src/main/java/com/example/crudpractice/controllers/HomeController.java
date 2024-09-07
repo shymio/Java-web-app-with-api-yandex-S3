@@ -20,14 +20,12 @@ public class HomeController {
 
     @GetMapping
     public String showHomePage(Model model) {
-        // Отображение главной страницы с помощью шаблонизатора
         return "home-page";
     }
 
     @GetMapping("/ads")
     @ResponseBody
     public List<Ad> getAllAds() {
-        // Возвращаем все объявления в формате JSON
         return adService.findAll();
     }
 }

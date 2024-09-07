@@ -1,96 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавить объявление</title>
+    <link rel="stylesheet" href="/css/add-ad.css">
+    <script>
+        function validateFileCount(input) {
+            const fileInput = input;
+            if (fileInput.files.length > 3) {
+                alert('Вы можете загрузить не более 3 фотографий.');
+                fileInput.value = ''; // Сбросить выбор файлов
+                return false;
+            }
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('photoFiles');
+            fileInput.addEventListener('change', () => validateFileCount(fileInput));
+        });
+    </script>
 </head>
 <body>
 
-<h1>Добавить новое объявление</h1>
+<div class="container">
+    <h1>Добавить новое объявление</h1>
 
-<form action="/ads/add" method="POST" enctype="multipart/form-data">
-    <label for="title">Название:</label>
-    <input type="text" id="title" name="title" required>
+    <form action="/ads/add" method="POST" enctype="multipart/form-data">
+        <label for="title">Название:</label>
+        <input type="text" id="title" name="title" required>
 
-    <label for="price">Цена:</label>
-    <input type="number" id="price" name="price">
+        <label for="price">Цена:</label>
+        <input type="number" id="price" name="price">
 
-    <label for="description">Описание:</label>
-    <textarea id="description" name="description"></textarea>
+        <label for="description">Описание:</label>
+        <textarea id="description" name="description"></textarea>
 
-    <label for="contact">Контактная информация:</label>
-    <input type="text" id="contact" name="contact" required>
+        <label for="contact">Контактная информация:</label>
+        <input type="text" id="contact" name="contact" required>
 
-    <label for="photoFiles">Фотографии (максимум 3):</label>
-    <input type="file" id="photoFiles" name="photoFiles" accept="image/*" multiple>
+        <label for="photoFiles">Фотографии (максимум 3):</label>
+        <input type="file" id="photoFiles" name="photoFiles" accept="image/*" multiple>
 
-    <button type="submit">Добавить объявление</button>
-</form>
-
-
-
-
-
-<!--<script>-->
-<!--    const photos = [];-->
-
-<!--    function uploadPhoto() {-->
-<!--        if (photos.length >= 3) {-->
-<!--            alert('Вы можете загрузить максимум 3 фотографии.');-->
-<!--            return;-->
-<!--        }-->
-
-<!--        const photoInput = document.getElementById('photoUpload');-->
-<!--        photoInput.click();-->
-
-<!--        photoInput.onchange = function(event) {-->
-<!--            const file = event.target.files[0];-->
-<!--            if (file) {-->
-<!--                photos.push(file);-->
-<!--                displayPhotos();-->
-<!--                photoInput.value = ''; // Очищаем input для следующего файла-->
-<!--            }-->
-<!--        };-->
-<!--    }-->
-
-<!--    function displayPhotos() {-->
-<!--        const photoInputs = document.getElementById('photoInputs');-->
-<!--        photoInputs.innerHTML = '';-->
-<!--        photos.forEach((photo, index) => {-->
-<!--            const photoDiv = document.createElement('div');-->
-<!--            photoDiv.textContent = `Фото ${index + 1}: ${photo.name}`;-->
-<!--            photoInputs.appendChild(photoDiv);-->
-<!--        });-->
-<!--    }-->
-
-<!--    document.getElementById('adForm').addEventListener('submit', function(event) {-->
-<!--        event.preventDefault(); // Останавливаем стандартную отправку формы-->
-
-<!--        const formData = new FormData(this);-->
-
-<!--        // Добавляем выбранные фотографии в formData-->
-<!--        photos.forEach((photo) => {-->
-<!--            formData.append('photos', photo);-->
-<!--        });-->
-
-<!--        // Отправляем данные формы на сервер-->
-<!--        fetch('/ads/add', {-->
-<!--            method: 'POST',-->
-<!--            body: formData,-->
-<!--        })-->
-<!--        .then(response => {-->
-<!--            if (response.ok) {-->
-<!--                window.location.href = '/'; // Редирект на главную страницу или другую после успешного добавления-->
-<!--            } else {-->
-<!--                return response.text().then(text => { throw new Error(text) });-->
-<!--            }-->
-<!--        })-->
-<!--        .catch(error => {-->
-<!--            console.error('Ошибка при отправке формы:', error);-->
-<!--            alert('Произошла ошибка при добавлении объявления.');-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
+        <button type="submit">Добавить объявление</button>
+    </form>
+</div>
 
 </body>
 </html>

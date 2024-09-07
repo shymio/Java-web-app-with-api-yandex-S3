@@ -24,15 +24,19 @@ public class AdController {
     private final AdService adService;
     private final AdPhotoService adPhotoService;
 
-    @GetMapping("/new") // отображение формы для добавления объявления
+    @GetMapping("/new")
     public String showAdForm(Model model) {
         model.addAttribute("ad", new Ad());
         return "ad-form";
     }
 
-    @PostMapping("/add") // отправка и сохранение данных в хранилища
-    public String addAd(@ModelAttribute Ad ad, @RequestParam(value = "photoFiles", required = false) List<MultipartFile> photoFiles) {
+    @PostMapping("/add")
+    public String addAd(@ModelAttribute Ad ad, @RequestParam(value = "photoFiles", required = false) List<MultipartFile> photoFiles, Model model) {
         if (photoFiles != null && !photoFiles.isEmpty()) {
+            if (photoFiles.size() > 3) {
+                model.addAttribute("errorMassage", "Вы не можете загрузить больше 3 фотографий");
+                return "error-page";
+            }
             for (MultipartFile photo : photoFiles) {
                 if (!photo.isEmpty()) {
                     try {
@@ -48,7 +52,7 @@ public class AdController {
         }
         adService.save(ad);
 
-        return "redirect:/ads/new";
+        return "redirect:/";
     }
 }
 
