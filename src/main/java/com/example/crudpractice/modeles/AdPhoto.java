@@ -1,5 +1,7 @@
 package com.example.crudpractice.modeles;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
@@ -16,7 +18,8 @@ public class AdPhoto {
     @NonNull
     private String url;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ad_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ad_id", nullable = false)
+    @JsonBackReference
     private Ad ad;
 }

@@ -14,7 +14,8 @@ import java.util.Optional;
 public interface AdRepository extends JpaRepository<Ad, Long> {
     List<Ad> findByTitle(String title);
 
-//    @Query("SELECT a FROM Ad a LEFT JOIN FETCH a.photos WHERE a.id = :id")
-//    Optional<Ad> findByIdWithPhotos(@Param("id") Long id);
+    @Query("SELECT ad FROM Ad ad LEFT JOIN FETCH ad.photos WHERE ad.id = :id")
+    Optional<Ad> findAdWithPhotos(@Param("id") Long id);
+
 
 }

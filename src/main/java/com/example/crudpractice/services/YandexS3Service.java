@@ -19,17 +19,17 @@ import java.util.UUID;
 public class YandexS3Service {
     private final S3Client s3Client;
 
-    public String  uploadPhoto(MultipartFile file) throws IOException {
+    public String uploadPhoto(MultipartFile file) throws IOException {
         String key = "photos/" + UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
 
-        try (InputStream inputStream = file.getInputStream()) {
+        try {
             PutObjectResponse response = s3Client.putObject(
                     PutObjectRequest.builder()
                     .bucket("shymio-bucket")
                     .key(key)
                     .contentType(file.getContentType())
                     .build(),
-                    RequestBody.fromInputStream(inputStream, file.getSize())
+                    RequestBody.fromInputStream(file.getInputStream(), file.getSize())
             );
             return "https://" + "shymio-bucket" + ".storage.yandexcloud.net/" + key;
         } catch (IOException e) {

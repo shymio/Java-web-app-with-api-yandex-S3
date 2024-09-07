@@ -8,10 +8,7 @@ import com.example.crudpractice.services.YandexS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,28 +31,24 @@ public class AdController {
     }
 
     @PostMapping("/add") // отправка и сохранение данных в хранилища
-    public String addAd(Ad ad, @RequestParam(value = "photos", required = false) List<MultipartFile> photos) {
-        List<AdPhoto> photoEntities = new ArrayList<>();
-
-        if (photos != null && !photos.isEmpty()) {
-            for (MultipartFile photo : photos) {
+    public String addAd(@ModelAttribute Ad ad, @RequestParam(value = "photoFiles", required = false) List<MultipartFile> photoFiles) {
+        if (photoFiles != null && !photoFiles.isEmpty()) {
+            for (MultipartFile photo : photoFiles) {
                 if (!photo.isEmpty()) {
                     try {
+                        String photoUrl = yandexS3Service.uploadPhoto(photo);
                         AdPhoto adPhoto = new AdPhoto();
-                        adPhoto.setUrl(yandexS3Service.uploadPhoto(photo));
-                        adPhoto.setAd(ad);
-                        photoEntities.add(adPhoto);
+                        adPhoto.setUrl(photoUrl);
+                        ad.addPhoto(adPhoto);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
-//        ad.setPhotos(photoEntities);
         adService.save(ad);
-        adPhotoService.saveAll(photoEntities);
 
-        return "redirect:/";
+        return "redirect:/ads/new";
     }
 }
 

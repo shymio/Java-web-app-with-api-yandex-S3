@@ -2,6 +2,7 @@ package com.example.crudpractice.services;
 
 import com.example.crudpractice.modeles.Ad;
 import com.example.crudpractice.repositories.AdRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,15 @@ public class AdService {
 
     public List<Ad> findByTitle(String title) {
         return adRepository.findByTitle(title);
+    }
+
+//    @Transactional
+    public Optional<Ad> findAdWithPhotos(Long id) {
+        return adRepository.findAdWithPhotos(id);
+    }
+
+    public List<Ad> findAll() {
+        return adRepository.findAll();
     }
 
     public void save(Ad ad) {
