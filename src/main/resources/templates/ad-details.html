@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Объявление</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="ad-page-container">
+  <div class="carousel">
+    <button class="carousel-button prev" onclick="moveSlide(-1)">&#10094;</button>
+    <div class="carousel-slides">
+      <img th:each="photo : ${ad.photos}" th:src="${photo.url}" alt="Фото объявления" class="carousel-image">
+    </div>
+    <button class="carousel-button next" onclick="moveSlide(1)">&#10095;</button>
+  </div>
+  <h1 th:text="${ad.title}"></h1>
+  <p class="ad-price" th:text="${ad.price} + ' ₽'"></p>
+  <p th:text="${ad.description}"></p>
+  <p class="ad-contact" th:text="'Контакт: ' + ${ad.contact}"></p>
+  <a href="/" class="back-button">Назад к объявлениям</a>
+</div>
+
+<script>
+  let slideIndex = 0;
+  function showSlides() {
+      const slides = document.querySelectorAll('.carousel-image');
+      if (slides.length > 0) {
+          slides.forEach((slide, index) => {
+              slide.style.display = (index === slideIndex) ? 'block' : 'none';
+          });
+      }
+  }
+  function moveSlide(n) {
+      const slides = document.querySelectorAll('.carousel-image');
+      if (slides.length > 0) {
+          slideIndex = (slideIndex + n + slides.length) % slides.length;
+          showSlides();
+      }
+  }
+  document.addEventListener('DOMContentLoaded', showSlides);
+</script>
+</body>
+</html>

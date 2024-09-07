@@ -63,6 +63,97 @@ a {
     color: inherit;
 }
 
+/* Стили для кнопки добавления объявления */
+.add-ad-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-add-ad {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn-add-ad:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Стили для основного контейнера и элементов */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ad-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.ad-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    transition: transform 0.3s ease;
+}
+
+.ad-card:hover {
+    transform: scale(1.05);
+}
+
+.ad-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.ad-details {
+    padding: 15px;
+}
+
+.ad-title {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.ad-price {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #888;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+
 /* Стили для страницы ошибки */
 .error-message {
     text-align: center;
@@ -98,3 +189,170 @@ a {
 .btn:hover {
     background: #2980b9;
 }
+
+/* Стили для страницы объявления */
+
+.ad-page-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carousel {
+    position: relative;
+    max-width: 600px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.carousel-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-image {
+    flex: 0 0 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 40px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.carousel-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+.ad-price {
+    font-size: 20px;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.ad-contact {
+    font-size: 16px;
+    color: #333;
+    margin-top: 20px;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+/* Стили для страницы добавления объявления */
+.add-ad-container {
+    width: 80%;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.add-ad-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.add-ad-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-ad-form label {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.add-ad-form input[type="text"],
+.add-ad-form input[type="number"],
+.add-ad-form textarea,
+.add-ad-form input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.add-ad-form input[type="text"]:focus,
+.add-ad-form input[type="number"]:focus,
+.add-ad-form textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    outline: none;
+}
+
+.add-ad-form input[type="file"] {
+    padding: 0;
+}
+
+.add-ad-form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-ad-form button:hover {
+    background-color: #0056b3;
+}
+
+.add-ad-form button:active {
+    transform: scale(0.98);
+}
+
+.add-ad-form button:focus {
+    outline: none;
+}
+

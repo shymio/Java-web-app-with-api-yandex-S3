@@ -2,9 +2,7 @@ package com.example.crudpractice.services;
 
 import com.example.crudpractice.modeles.Ad;
 import com.example.crudpractice.repositories.AdRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

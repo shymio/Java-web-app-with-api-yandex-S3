@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавить объявление</title>
-    <link rel="stylesheet" href="/css/add-ad.css">
+    <link rel="stylesheet" href="/styles.css">
     <script>
         function validateFileCount(input) {
             const fileInput = input;
@@ -24,10 +24,10 @@
 </head>
 <body>
 
-<div class="container">
+<div class="add-ad-container">
     <h1>Добавить новое объявление</h1>
 
-    <form action="/ads/add" method="POST" enctype="multipart/form-data">
+    <form class="add-ad-form" action="/ads/add" method="POST" enctype="multipart/form-data">
         <label for="title">Название:</label>
         <input type="text" id="title" name="title" required>
 

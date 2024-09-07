@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/ads")
@@ -51,8 +51,16 @@ public class AdController {
             }
         }
         adService.save(ad);
-
         return "redirect:/";
+    }
+
+    @GetMapping("/{id}")
+    public String showAd(@PathVariable Long id, Model model) {
+        Optional<Ad> ad = adService.findById(id);
+        if(ad.isPresent()) {
+            model.addAttribute("ad", ad.get());
+            return "ad-details";
+        } else return "redirect:/";
     }
 }
 
