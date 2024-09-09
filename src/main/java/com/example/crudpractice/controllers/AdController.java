@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,6 +63,18 @@ public class AdController {
             return "ad-details";
         } else return "redirect:/";
     }
+
+    // Контроллер для удаления объявления
+    @PostMapping("/delete/{id}")
+    public String deleteAd(@PathVariable Long id) {
+        Optional<Ad> adOptional = adService.findById(id);
+        if (adOptional.isPresent()){
+            adService.delete(adOptional.get());
+        } else return "redirect:/error-page";
+        return "redirect:/";
+    }
+
+
 }
 
 

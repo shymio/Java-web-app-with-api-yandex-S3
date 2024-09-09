@@ -32,9 +32,4 @@ public class Ad {
         photos.add(adPhoto);
         adPhoto.setAd(this);
     }
-
-    public void removePhoto(AdPhoto adPhoto) {
-        photos.remove(adPhoto);
-        adPhoto.setAd(null);
-    }
 }

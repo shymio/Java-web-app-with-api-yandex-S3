@@ -19,7 +19,15 @@
   <p class="ad-price" th:text="${ad.price} + ' ₽'"></p>
   <p th:text="${ad.description}"></p>
   <p class="ad-contact" th:text="'Контакт: ' + ${ad.contact}"></p>
-  <a href="/" class="back-button">Назад к объявлениям</a>
+  <div class="button-group">
+    <a href="/" class="button back-button">Назад к объявлениям</a>
+    <a th:href="@{/ads/edit/{id}(id=${ad.id})}" class="button edit-button">Редактировать</a>
+  </div>
+  <div class="buttons-container">
+    <form th:action="@{/ads/delete/{id}(id=${ad.id})}" method="post" class="delete-form">
+      <button type="submit" class="button delete-button">Удалить объявление</button>
+    </form>
+  </div>
 </div>
 
 <script>
