@@ -23,11 +23,11 @@ public class AdPhotoService {
         List<AdPhoto> photos = adPhotoRepository.findAllByAdId(adId);
         for (AdPhoto photo : photos) {
             try {
-                yandexS3Service.deletePhoto(photo.getUrl()); // Удаление из Yandex S3
+                yandexS3Service.deletePhoto(photo.getUrl());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        adPhotoRepository.deleteAll(photos); // Удаление из базы данных
+        adPhotoRepository.deleteAll(photos);
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -99,20 +98,9 @@ public class AdController {
             existingAd.setDescription(ad.getDescription());
             existingAd.setContact(ad.getContact());
 
-            // Добавление новых фотографий
-            if (photoFiles != null && !photoFiles.isEmpty()) {
-                // Удаление старых фотографий из хранилища
-//                for (AdPhoto oldPhoto : existingAd.getPhotos()) {
-//                    try {
-//                        yandexS3Service.deletePhoto(oldPhoto.getUrl()); // Метод удаления фото из Yandex Object Storage
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-                // Очистка старых фотографий из базы данных
-                adPhotoService.deleteAdPhotos(existingAd.getId());
-//                existingAd.getPhotos().clear();
 
+            if (photoFiles != null && !photoFiles.isEmpty()) {
+                adPhotoService.deleteAdPhotos(existingAd.getId());
                 for (MultipartFile photo : photoFiles) {
                     if (!photo.isEmpty()) {
                         try {

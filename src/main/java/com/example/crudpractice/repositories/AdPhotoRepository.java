@@ -12,5 +12,4 @@ import java.util.List;
 public interface AdPhotoRepository extends JpaRepository<AdPhoto, Long> {
 
     List<AdPhoto> findAllByAdId(Long adId);
-//    void deleteAll(List<AdPhoto> photos);
 }
