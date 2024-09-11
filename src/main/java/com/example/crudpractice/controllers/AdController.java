@@ -5,6 +5,7 @@ import com.example.crudpractice.modeles.AdPhoto;
 import com.example.crudpractice.services.AdPhotoService;
 import com.example.crudpractice.services.AdService;
 import com.example.crudpractice.services.YandexS3Service;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,7 +65,6 @@ public class AdController {
         } else return "redirect:/";
     }
 
-    // Контроллер для удаления объявления
     @PostMapping("/delete/{id}")
     public String deleteAd(@PathVariable Long id) {
         Optional<Ad> adOptional = adService.findById(id);
@@ -88,37 +88,8 @@ public class AdController {
         return "redirect:/error-page";
     }
 
-//    @PostMapping("/edit/{id}")
-//    public String editAd(@PathVariable Long id, @ModelAttribute Ad ad, @RequestParam(value = "photoFiles", required = false) List<MultipartFile> photoFiles) {
-//        Optional<Ad> adOptional = adService.findById(id);
-//        if (adOptional.isPresent()) {
-//            Ad existingAd = adOptional.get();
-//            existingAd.setTitle(ad.getTitle());
-//            existingAd.setPrice(ad.getPrice());
-//            existingAd.setDescription(ad.getDescription());
-//            existingAd.setContact(ad.getContact());
-//            if (photoFiles != null && !photoFiles.isEmpty()) {
-//                existingAd.getPhotos().clear(); // Очистите старые фотографии
-//                for (MultipartFile photo : photoFiles) {
-//                    if (!photo.isEmpty()) {
-//                        try {
-//                            String photoUrl = yandexS3Service.uploadPhoto(photo);
-//                            AdPhoto adPhoto = new AdPhoto();
-//                            adPhoto.setUrl(photoUrl);
-//                            existingAd.addPhoto(adPhoto);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }
-//            adService.save(existingAd);
-//            return "redirect:/";
-//        }
-//        return "redirect:/error-page";
-//    }
-
     @PostMapping("/edit/{id}")
+    @Transactional
     public String editAd(@PathVariable Long id, @ModelAttribute Ad ad, @RequestParam(value = "photoFiles", required = false) List<MultipartFile> photoFiles) {
         Optional<Ad> adOptional = adService.findById(id);
         if (adOptional.isPresent()) {
@@ -128,27 +99,27 @@ public class AdController {
             existingAd.setDescription(ad.getDescription());
             existingAd.setContact(ad.getContact());
 
-            // Удаление старых фотографий из хранилища
-            for (AdPhoto oldPhoto : existingAd.getPhotos()) {
-                try {
-                    yandexS3Service.deletePhoto(oldPhoto.getUrl()); // Метод удаления фото из Yandex Object Storage
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // Очистка старых фотографий из базы данных
-            existingAd.getPhotos().clear();
-
             // Добавление новых фотографий
             if (photoFiles != null && !photoFiles.isEmpty()) {
+                // Удаление старых фотографий из хранилища
+//                for (AdPhoto oldPhoto : existingAd.getPhotos()) {
+//                    try {
+//                        yandexS3Service.deletePhoto(oldPhoto.getUrl()); // Метод удаления фото из Yandex Object Storage
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+                // Очистка старых фотографий из базы данных
+                adPhotoService.deleteAdPhotos(existingAd.getId());
+//                existingAd.getPhotos().clear();
+
                 for (MultipartFile photo : photoFiles) {
                     if (!photo.isEmpty()) {
                         try {
                             String photoUrl = yandexS3Service.uploadPhoto(photo);
-                            AdPhoto adPhoto = new AdPhoto();
-                            adPhoto.setUrl(photoUrl);
-                            existingAd.addPhoto(adPhoto);
+                            AdPhoto newPhoto = new AdPhoto();
+                            newPhoto.setUrl(photoUrl);
+                            existingAd.addPhoto(newPhoto);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

@@ -14,7 +14,6 @@
     <div class="add-ad-button-container">
         <a href="/ads/new" class="btn-add-ad">Добавить объявление</a>
     </div>
-    </div>
 </div>
 
 <script>
@@ -26,9 +25,14 @@
                 data.slice(0, 6).forEach(ad => {
                     const adElement = document.createElement('div');
                     adElement.className = 'ad-card';
+
+                    const photoUrl = ad.photos.length > 0
+                    ? ad.photos[0].url
+                    : 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womantowomanmentoring.org%2Fmentor%2Fplaceholder%2F&psig=AOvVaw1jp-Uqj-HmrMgEJuh7G2Dh&ust=1726126094611000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNi1zveuuogDFQAAAAAdAAAAABB2';
+
                     adElement.innerHTML = `
                         <a href="/ads/${ad.id}">
-                            <img src="${ad.photos[0].url}" alt="${ad.title}" class="ad-image">
+                            <img src="${photoUrl}" alt="${ad.title}" class="ad-image">
                             <div class="ad-details">
                                 <h2 class="ad-title">${ad.title}</h2>
                                 <p class="ad-price">${ad.price} ₽</p>
