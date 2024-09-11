@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать объявление</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="add-ad-container">
+    <h1>Редактировать объявление</h1>
+
+    <form class="add-ad-form" th:action="@{/ads/edit/{id}(id=${ad.id})}" method="post" enctype="multipart/form-data">
+        <label for="title">Название:</label>
+        <input type="text" id="title" name="title" th:value="${ad.title}" required>
+
+        <label for="price">Цена:</label>
+        <input type="number" id="price" name="price" th:value="${ad.price}">
+
+        <label for="description">Описание:</label>
+        <textarea id="description" name="description" th:text="${ad.description}"></textarea>
+
+        <label for="contact">Контактная информация:</label>
+        <input type="text" id="contact" name="contact" th:value="${ad.contact}" required>
+
+        <label for="photoFiles">Фотографии (максимум 3):</label>
+        <input type="file" id="photoFiles" name="photoFiles" accept="image/*" multiple>
+
+        <button type="submit">Сохранить изменения</button>
+    </form>
+
+    <a href="/" class="back-button">Назад к объявлениям</a>
+</div>
+</body>
+</html>

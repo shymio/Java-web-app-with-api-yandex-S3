@@ -70,11 +70,97 @@ public class AdController {
         Optional<Ad> adOptional = adService.findById(id);
         if (adOptional.isPresent()){
             adService.delete(adOptional.get());
+            List<AdPhoto> adPhotos = adOptional.get().getPhotos();
+            for (AdPhoto adPhoto : adPhotos) {
+                yandexS3Service.deletePhoto(adPhoto.getUrl());
+            }
         } else return "redirect:/error-page";
         return "redirect:/";
     }
 
+    @GetMapping("/edit/{id}")
+    public String editAdForm(@PathVariable Long id, Model model) {
+        Optional<Ad> adOptional = adService.findById(id);
+        if (adOptional.isPresent()) {
+            model.addAttribute("ad", adOptional.get());
+            return "edit-ad";
+        }
+        return "redirect:/error-page";
+    }
 
+//    @PostMapping("/edit/{id}")
+//    public String editAd(@PathVariable Long id, @ModelAttribute Ad ad, @RequestParam(value = "photoFiles", required = false) List<MultipartFile> photoFiles) {
+//        Optional<Ad> adOptional = adService.findById(id);
+//        if (adOptional.isPresent()) {
+//            Ad existingAd = adOptional.get();
+//            existingAd.setTitle(ad.getTitle());
+//            existingAd.setPrice(ad.getPrice());
+//            existingAd.setDescription(ad.getDescription());
+//            existingAd.setContact(ad.getContact());
+//            if (photoFiles != null && !photoFiles.isEmpty()) {
+//                existingAd.getPhotos().clear(); // Очистите старые фотографии
+//                for (MultipartFile photo : photoFiles) {
+//                    if (!photo.isEmpty()) {
+//                        try {
+//                            String photoUrl = yandexS3Service.uploadPhoto(photo);
+//                            AdPhoto adPhoto = new AdPhoto();
+//                            adPhoto.setUrl(photoUrl);
+//                            existingAd.addPhoto(adPhoto);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//            adService.save(existingAd);
+//            return "redirect:/";
+//        }
+//        return "redirect:/error-page";
+//    }
+
+    @PostMapping("/edit/{id}")
+    public String editAd(@PathVariable Long id, @ModelAttribute Ad ad, @RequestParam(value = "photoFiles", required = false) List<MultipartFile> photoFiles) {
+        Optional<Ad> adOptional = adService.findById(id);
+        if (adOptional.isPresent()) {
+            Ad existingAd = adOptional.get();
+            existingAd.setTitle(ad.getTitle());
+            existingAd.setPrice(ad.getPrice());
+            existingAd.setDescription(ad.getDescription());
+            existingAd.setContact(ad.getContact());
+
+            // Удаление старых фотографий из хранилища
+            for (AdPhoto oldPhoto : existingAd.getPhotos()) {
+                try {
+                    yandexS3Service.deletePhoto(oldPhoto.getUrl()); // Метод удаления фото из Yandex Object Storage
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // Очистка старых фотографий из базы данных
+            existingAd.getPhotos().clear();
+
+            // Добавление новых фотографий
+            if (photoFiles != null && !photoFiles.isEmpty()) {
+                for (MultipartFile photo : photoFiles) {
+                    if (!photo.isEmpty()) {
+                        try {
+                            String photoUrl = yandexS3Service.uploadPhoto(photo);
+                            AdPhoto adPhoto = new AdPhoto();
+                            adPhoto.setUrl(photoUrl);
+                            existingAd.addPhoto(adPhoto);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            adService.save(existingAd);
+            return "redirect:/";
+        }
+        return "redirect:/error-page";
+    }
 }
 
 

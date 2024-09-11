@@ -404,25 +404,6 @@ a {
     margin-top: 20px;
 }
 
-/* Стили для кнопки редактирования */
-.edit-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.edit-button:hover {
-    background-color: #0056b3;
-}
-
-.edit-button:active {
-    transform: scale(0.98);
-}
-
 /* Стили для кнопки удаления */
 .buttons-container {
     display: flex;
@@ -435,12 +416,14 @@ a {
 }
 
 .delete-button {
+    display: inline-block;
+    padding: 10px 20px;
     background-color: #dc3545;
     color: #fff;
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
     cursor: pointer;
+    text-decoration: none;
     transition: background-color 0.3s, transform 0.2s;
 }
 
@@ -468,5 +451,24 @@ a {
 }
 
 .back-button:active {
+    transform: scale(0.98);
+}
+
+/* Стили для кнопки редактирования */
+.edit-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.edit-button:active {
     transform: scale(0.98);
 }
