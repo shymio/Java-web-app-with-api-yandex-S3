@@ -1,6 +1,6 @@
 # Advertisement Manager
 
-## Описание
+## Description
 It is a small web application that allows you to manage ads. It includes the ability to add ads with the necessary information about the ad: name, price, description, contacts and 3 photos. And also view existing ads on the main page. The main feature of the backend is storing photos in Yandex Cloud Storage S3.
 
 ## Technologies
