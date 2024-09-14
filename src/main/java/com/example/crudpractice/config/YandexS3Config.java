@@ -17,7 +17,7 @@ public class YandexS3Config {
         return S3Client.builder()
                 .region(Region.of("ru-central1"))
                 .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create("YCAJEaaBK76Yja0BjF_RFmpai", "YCNo3ozcjIpUOhTWfkKOZGSHDi-Za1Ga9eK4lfSK")))
+                        AwsBasicCredentials.create("XXXXXXXXXXXXXXX", "XXXXXXXXXXX")))
                 .endpointOverride(URI.create("https://storage.yandexcloud.net"))
                 .build();
     }
